@@ -1,0 +1,6 @@
+theme:           jekyll-theme-cayman
+title:           Typer
+description:     A tower defense like typing game
+is_user_page:    false
+is_project_page: true
+show_downloads:  true
