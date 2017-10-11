@@ -1,6 +1,6 @@
 # Typer
 
-A tower defense like typing game. Wrong characters are penalized. Characters are case sensitive. Written in ES6\. You can play it [here](https://berkerol.github.io/typer/typer.html).
+A tower defense like typing game. Characters are case sensitive. Wrong characters decrease the score. Written in ES6\. You can play it [here](https://berkerol.github.io/typer/typer.html).
 
 ## Contribution
 

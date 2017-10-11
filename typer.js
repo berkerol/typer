@@ -20,7 +20,7 @@ let char = {
 };
 
 let circle = {
-  decrease: 0.02,
+  decrease: 0.05,
   opacity: 0.5,
   total: 50
 };
@@ -39,6 +39,7 @@ let circles = [];
 
 draw();
 document.addEventListener("keydown", keyDownHandler);
+window.addEventListener("resize", resizeHandler);
 
 function drawCenter() {
   ctx.beginPath();
@@ -69,13 +70,13 @@ function drawLabel(message, number, position) {
 }
 
 function drawCircles() {
-  for (var j = circles.length - 1; j >= 0; j--) {
-    var c = circles[j];
+  for (let j = circles.length - 1; j >= 0; j--) {
+    let c = circles[j];
     drawCircle(c);
     c.x += c.dx;
     c.y += c.dy;
     c.radius -= circle.decrease;
-    if (c.radius <= 0) {
+    if (c.radius <= 0 || c.x < 0 || c.x > canvas.width || c.y < 0 || c.y > canvas.height) {
       circles.splice(j, 1);
     }
   }
@@ -111,11 +112,17 @@ function createChars() {
 }
 
 function removeChars() {
-  for (let i = chars.length - 1; i >= 0; i--) {
-    let c = chars[i];
+  for (let c of chars) {
     if (intersects(c.x, c.y, char.size, char.size, center.x, center.y, center.radius, center.radius)) {
-      chars.splice(i, 1);
-      die(true);
+      health--;
+      if (health === 0) {
+        alert("GAME OVER!");
+        document.location.reload();
+      } else {
+        alert("START AGAIN!");
+        chars = [];
+        circles = [];
+      }
       break;
     }
   }
@@ -133,33 +140,19 @@ function intersects(x1, y1, w1, h1, x2, y2, w2, h2) {
   return x2 < x1 + w1 && x2 + w2 > x1 && y2 < y1 + h1 && y2 + h2 > y1;
 }
 
-function die(start) {
-  health--;
-  if (health === 0) {
-    alert("GAME OVER");
-    document.location.reload();
-  } else {
-    if (start) {
-      alert("START AGAIN!");
-      chars = [];
-      circles = [];
-    }
-  }
-}
-
 function type(i, char) {
   chars.splice(i, 1);
   score++;
-  for (var j = 0; j < circle.total; j++) {
+  for (let j = 0; j < circle.total; j++) {
     circles.push({
       x: char.x,
       y: char.y,
       radius: 2 + Math.random() * 3,
       dx: -5 + Math.random() * 10,
       dy: -5 + Math.random() * 10,
-      r: Math.round(Math.random()) * 255,
-      g: Math.round(Math.random()) * 255,
-      b: Math.round(Math.random()) * 255
+      r: Math.floor(Math.random() * 255),
+      g: Math.floor(Math.random() * 255),
+      b: Math.floor(Math.random() * 255)
     });
   }
 }
@@ -180,6 +173,13 @@ function keyDownHandler(e) {
     }
   }
   if (!e.shiftKey) {
-    die(false);
+    score--;
   }
+}
+
+function resizeHandler() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  center.x = canvas.width / 2 - center.radius;
+  center.y = canvas.height / 2 - center.radius;
 }
