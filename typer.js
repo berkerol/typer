@@ -3,6 +3,9 @@ let ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+let score = 0;
+let lives = 10;
+
 let center = {
   x: canvas.width / 2 - 20,
   y: canvas.height / 2 - 20,
@@ -10,164 +13,161 @@ let center = {
   color: "#FF0000"
 };
 
-let char = {
-  probability: 0.02,
-  speed: 400,
-  speedVariance: 200,
+let letter = {
   font: "20px Arial",
   color: "#0095DD",
-  size: 30
+  size: 30,
+  highestSpeed: 1.6,
+  lowestSpeed: 0.6,
+  probability: 0.02
 };
 
-let circle = {
+let particle = {
+  alpha: 0.5,
   decrease: 0.05,
-  opacity: 0.5,
+  highestRadius: 5,
+  highestSpeedX: 5,
+  highestSpeedY: 5,
+  lowestRadius: 2,
+  lowestSpeedX: -5,
+  lowestSpeedY: -5,
   total: 50
 };
 
 let label = {
-  font: "16px Arial",
+  font: "24px Arial",
   color: "#0095DD",
-  size: 20
+  margin: 20
 };
 
-let score = 0;
-let health = 10;
-
-let chars = [];
-let circles = [];
+let letters = [];
+let particles = [];
 
 draw();
 document.addEventListener("keydown", keyDownHandler);
 window.addEventListener("resize", resizeHandler);
 
-function drawCenter() {
-  ctx.beginPath();
-  ctx.arc(center.x, center.y, center.radius, 0, 2 * Math.PI);
-  ctx.fillStyle = center.color;
-  ctx.fill();
-  ctx.closePath();
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawCircle(center);
+  for (let l of letters) {
+    drawLetter(l);
+  }
+  for (let p of particles) {
+    drawCircle(p);
+  }
+  drawLabel("Score: " + score, 10);
+  drawLabel("Lives: " + lives, canvas.width - 110);
+  processParticles();
+  createLetters();
+  removeLetters();
+  requestAnimationFrame(draw);
 }
 
 function drawCircle(c) {
   ctx.beginPath();
   ctx.arc(c.x, c.y, c.radius, 0, 2 * Math.PI);
-  ctx.fillStyle = "rgba(" + c.r + ", " + c.g + ", " + c.b + ", " + circle.opacity + ")";
+  ctx.fillStyle = c.color;
   ctx.fill();
   ctx.closePath();
 }
 
-function drawChar(c) {
-  ctx.font = char.font;
-  ctx.fillStyle = char.color;
-  ctx.fillText(c.char, c.x, c.y, char.size);
+function drawLetter(l) {
+  ctx.font = letter.font;
+  ctx.fillStyle = letter.color;
+  ctx.fillText(String.fromCharCode(l.code), l.x, l.y, letter.size);
 }
 
-function drawLabel(message, number, position) {
+function drawLabel(text, x) {
   ctx.font = label.font;
   ctx.fillStyle = label.color;
-  ctx.fillText(message + number, position, label.size);
+  ctx.fillText(text, x, label.margin);
 }
 
-function drawCircles() {
-  for (let j = circles.length - 1; j >= 0; j--) {
-    let c = circles[j];
-    drawCircle(c);
-    c.x += c.dx;
-    c.y += c.dy;
-    c.radius -= circle.decrease;
-    if (c.radius <= 0 || c.x < 0 || c.x > canvas.width || c.y < 0 || c.y > canvas.height) {
-      circles.splice(j, 1);
+function processParticles() {
+  for (let i = particles.length - 1; i >= 0; i--) {
+    let p = particles[i];
+    p.x += p.speedX;
+    p.y += p.speedY;
+    p.radius -= particle.decrease;
+    if (p.radius <= 0 || p.x < 0 || p.x > canvas.width || p.y < 0 || p.y > canvas.height) {
+      particles.splice(i, 1);
     }
   }
 }
 
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawCenter();
-  drawLabel("Score: ", score, 10);
-  drawLabel("Lives: ", health, canvas.width - 80);
-  drawCircles();
-  createChars();
-  removeChars();
-  drawChars();
-  requestAnimationFrame(draw);
-}
-
-function createChars() {
-  if (Math.random() < char.probability) {
+function createLetters() {
+  if (Math.random() < letter.probability) {
     let x = Math.random() < 0.5 ? 0 : canvas.width;
     let y = Math.random() * canvas.height;
-    let code = Math.random() < 0.5 ? Math.floor(Math.random() * 25 + 65) : Math.floor(Math.random() * 25 + 97);
-    let s = Math.floor(Math.random() * char.speedVariance + char.speed);
-    chars.push({
+    let dX = center.x - x;
+    let dY = center.y - y;
+    let norm = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+    let speed = letter.lowestSpeed + Math.random() * (letter.highestSpeed - letter.lowestSpeed);
+    letters.push({
       x,
       y,
-      code,
-      char: String.fromCharCode(code),
-      dx: (center.x - x) / s,
-      dy: (center.y - y) / s
+      code: Math.random() < 0.5 ? Math.floor(Math.random() * 25 + 65) : Math.floor(Math.random() * 25 + 97),
+      speedX: dX / norm * speed,
+      speedY: dY / norm * speed
     });
   }
 }
 
-function removeChars() {
-  for (let c of chars) {
-    if (intersects(c.x, c.y, char.size, char.size, center.x, center.y, center.radius, center.radius)) {
-      health--;
-      if (health === 0) {
+function removeLetters() {
+  for (let l of letters) {
+    if (intersects(l.x, l.y, letter.size, letter.size, center.x, center.y, center.radius, center.radius)) {
+      if (--lives === 0) {
         alert("GAME OVER!");
         document.location.reload();
       } else {
         alert("START AGAIN!");
-        chars = [];
-        circles = [];
+        letters = [];
+        particles = [];
       }
       break;
+    } else {
+      l.x += l.speedX;
+      l.y += l.speedY;
     }
   }
 }
 
-function drawChars() {
-  for (let char of chars) {
-    char.x += char.dx;
-    char.y += char.dy;
-    drawChar(char);
-  }
+function generateRandomRgbColor() {
+  return [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
 }
 
 function intersects(x1, y1, w1, h1, x2, y2, w2, h2) {
   return x2 < x1 + w1 && x2 + w2 > x1 && y2 < y1 + h1 && y2 + h2 > y1;
 }
 
-function type(i, char) {
-  chars.splice(i, 1);
+function type(i, l) {
+  letters.splice(i, 1);
   score++;
-  for (let j = 0; j < circle.total; j++) {
-    circles.push({
-      x: char.x,
-      y: char.y,
-      radius: 2 + Math.random() * 3,
-      dx: -5 + Math.random() * 10,
-      dy: -5 + Math.random() * 10,
-      r: Math.floor(Math.random() * 255),
-      g: Math.floor(Math.random() * 255),
-      b: Math.floor(Math.random() * 255)
+  for (let j = 0; j < particle.total; j++) {
+    let c = generateRandomRgbColor();
+    particles.push({
+      x: l.x,
+      y: l.y,
+      radius: particle.lowestRadius + Math.random() * (particle.highestRadius - particle.lowestRadius),
+      color: "rgba(" + c[0] + ", " + c[1] + ", " + c[2] + ", " + particle.alpha + ")",
+      speedX: particle.lowestSpeedX + Math.random() * (particle.highestSpeedX - particle.lowestSpeedX),
+      speedY: particle.lowestSpeedY + Math.random() * (particle.highestSpeedY - particle.lowestSpeedY),
     });
   }
 }
 
 function keyDownHandler(e) {
-  for (let i = chars.length - 1; i >= 0; i--) {
-    let char = chars[i];
+  for (let i = letters.length - 1; i >= 0; i--) {
+    let l = letters[i];
     if (e.shiftKey) {
-      if (e.keyCode === char.code) {
-        type(i, char);
+      if (e.keyCode === l.code) {
+        type(i, l);
         return;
       }
     } else {
-      if (e.keyCode + 32 === char.code) {
-        type(i, char);
+      if (e.keyCode + 32 === l.code) {
+        type(i, l);
         return;
       }
     }
