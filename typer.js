@@ -51,13 +51,13 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawCircle(center);
   for (let l of letters) {
-    drawLetter(l);
+    drawLabel(letter.font, letter.color, String.fromCharCode(l.code), l.x, l.y);
   }
   for (let p of particles) {
     drawCircle(p);
   }
-  drawLabel("Score: " + score, 10);
-  drawLabel("Lives: " + lives, canvas.width - 110);
+  drawLabel(label.font, label.color, "Score: " + score, 10, label.margin);
+  drawLabel(label.font, label.color, "Lives: " + lives, canvas.width - 110, label.margin);
   processParticles();
   createLetters();
   removeLetters();
@@ -72,16 +72,10 @@ function drawCircle(c) {
   ctx.closePath();
 }
 
-function drawLetter(l) {
-  ctx.font = letter.font;
-  ctx.fillStyle = letter.color;
-  ctx.fillText(String.fromCharCode(l.code), l.x, l.y, letter.size);
-}
-
-function drawLabel(text, x) {
-  ctx.font = label.font;
-  ctx.fillStyle = label.color;
-  ctx.fillText(text, x, label.margin);
+function drawLabel(font, color, text, x, y) {
+  ctx.font = font;
+  ctx.fillStyle = color;
+  ctx.fillText(text, x, y);
 }
 
 function processParticles() {
