@@ -1,5 +1,7 @@
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
+/* global alert */
+/* global requestAnimationFrame */
+let canvas = document.getElementById('canvas');
+let ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
@@ -10,12 +12,12 @@ let center = {
   x: canvas.width / 2 - 20,
   y: canvas.height / 2 - 20,
   radius: 20,
-  color: "#FF0000"
+  color: '#FF0000'
 };
 
 let letter = {
-  font: "20px Arial",
-  color: "#0095DD",
+  font: '20px Arial',
+  color: '#0095DD',
   size: 30,
   highestSpeed: 1.6,
   lowestSpeed: 0.6,
@@ -35,8 +37,8 @@ let particle = {
 };
 
 let label = {
-  font: "24px Arial",
-  color: "#0095DD",
+  font: '24px Arial',
+  color: '#0095DD',
   margin: 20
 };
 
@@ -44,10 +46,10 @@ let letters = [];
 let particles = [];
 
 draw();
-document.addEventListener("keydown", keyDownHandler);
-window.addEventListener("resize", resizeHandler);
+document.addEventListener('keydown', keyDownHandler);
+window.addEventListener('resize', resizeHandler);
 
-function draw() {
+function draw () {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawCircle(center);
   for (let l of letters) {
@@ -56,15 +58,15 @@ function draw() {
   for (let p of particles) {
     drawCircle(p);
   }
-  drawLabel(label.font, label.color, "Score: " + score, 10, label.margin);
-  drawLabel(label.font, label.color, "Lives: " + lives, canvas.width - 110, label.margin);
+  drawLabel(label.font, label.color, 'Score: ' + score, 10, label.margin);
+  drawLabel(label.font, label.color, 'Lives: ' + lives, canvas.width - 110, label.margin);
   processParticles();
   createLetters();
   removeLetters();
   requestAnimationFrame(draw);
 }
 
-function drawCircle(c) {
+function drawCircle (c) {
   ctx.beginPath();
   ctx.arc(c.x, c.y, c.radius, 0, 2 * Math.PI);
   ctx.fillStyle = c.color;
@@ -72,13 +74,13 @@ function drawCircle(c) {
   ctx.closePath();
 }
 
-function drawLabel(font, color, text, x, y) {
+function drawLabel (font, color, text, x, y) {
   ctx.font = font;
   ctx.fillStyle = color;
   ctx.fillText(text, x, y);
 }
 
-function processParticles() {
+function processParticles () {
   for (let i = particles.length - 1; i >= 0; i--) {
     let p = particles[i];
     p.x += p.speedX;
@@ -90,7 +92,7 @@ function processParticles() {
   }
 }
 
-function createLetters() {
+function createLetters () {
   if (Math.random() < letter.probability) {
     let x = Math.random() < 0.5 ? 0 : canvas.width;
     let y = Math.random() * canvas.height;
@@ -108,14 +110,14 @@ function createLetters() {
   }
 }
 
-function removeLetters() {
+function removeLetters () {
   for (let l of letters) {
     if (intersects(l.x, l.y, letter.size, letter.size, center.x, center.y, center.radius, center.radius)) {
       if (--lives === 0) {
-        alert("GAME OVER!");
+        alert('GAME OVER!');
         document.location.reload();
       } else {
-        alert("START AGAIN!");
+        alert('START AGAIN!');
         letters = [];
         particles = [];
       }
@@ -127,15 +129,15 @@ function removeLetters() {
   }
 }
 
-function generateRandomRgbColor() {
+function generateRandomRgbColor () {
   return [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
 }
 
-function intersects(x1, y1, w1, h1, x2, y2, w2, h2) {
+function intersects (x1, y1, w1, h1, x2, y2, w2, h2) {
   return x2 < x1 + w1 && x2 + w2 > x1 && y2 < y1 + h1 && y2 + h2 > y1;
 }
 
-function type(i, l) {
+function type (i, l) {
   letters.splice(i, 1);
   score++;
   for (let j = 0; j < particle.total; j++) {
@@ -144,14 +146,14 @@ function type(i, l) {
       x: l.x,
       y: l.y,
       radius: particle.lowestRadius + Math.random() * (particle.highestRadius - particle.lowestRadius),
-      color: "rgba(" + c[0] + ", " + c[1] + ", " + c[2] + ", " + particle.alpha + ")",
+      color: 'rgba(' + c[0] + ', ' + c[1] + ', ' + c[2] + ', ' + particle.alpha + ')',
       speedX: particle.lowestSpeedX + Math.random() * (particle.highestSpeedX - particle.lowestSpeedX),
-      speedY: particle.lowestSpeedY + Math.random() * (particle.highestSpeedY - particle.lowestSpeedY),
+      speedY: particle.lowestSpeedY + Math.random() * (particle.highestSpeedY - particle.lowestSpeedY)
     });
   }
 }
 
-function keyDownHandler(e) {
+function keyDownHandler (e) {
   for (let i = letters.length - 1; i >= 0; i--) {
     let l = letters[i];
     if (e.shiftKey) {
@@ -171,7 +173,7 @@ function keyDownHandler(e) {
   }
 }
 
-function resizeHandler() {
+function resizeHandler () {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   center.x = canvas.width / 2 - center.radius;
