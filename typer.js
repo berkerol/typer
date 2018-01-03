@@ -1,5 +1,3 @@
-/* global alert */
-/* global requestAnimationFrame */
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -67,7 +65,7 @@ function draw () {
   processParticles();
   createLetters();
   removeLetters();
-  requestAnimationFrame(draw);
+  window.requestAnimationFrame(draw);
 }
 
 function drawCircle (c) {
@@ -116,10 +114,10 @@ function removeLetters () {
   for (let l of letters) {
     if (intersects(l.x, l.y, letter.size, letter.size, center.x, center.y, center.radius, center.radius)) {
       if (--lives === 0) {
-        alert('GAME OVER!');
+        window.alert('GAME OVER!');
         document.location.reload();
       } else {
-        alert('START AGAIN!');
+        window.alert('START AGAIN!');
         letters = [];
         particles = [];
       }
