@@ -4,7 +4,9 @@
 [![semistandard](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/Flet/semistandard)
 [![license](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](https://github.com/berkerol/typer/blob/master/LICENSE)
 
-A tower defense like typing game. Characters are case sensitive. Wrong characters decrease the score. Written in ES6\. You can play it [here](https://berkerol.github.io/typer/typer.html).
+A tower defense like typing game. Characters are case sensitive. Wrong characters decrease the score. Written in [ES6](https://www.ecma-international.org/ecma-262/6.0/).
+
+[![button](play.png)](https://berkerol.github.io/typer/typer.html)
 
 ## Contribution
 
