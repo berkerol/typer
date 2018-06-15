@@ -5,6 +5,7 @@ canvas.height = window.innerHeight;
 
 let score = 0;
 let lives = 10;
+let caseSensitive = true;
 
 let center = {
   x: canvas.width / 2 - 20,
@@ -153,16 +154,32 @@ function type (i, l) {
   }
 }
 
+function changeCase () {
+  caseSensitive = !caseSensitive;
+  if (caseSensitive) {
+    document.getElementById('change-case').innerHTML = '';
+  } else {
+    document.getElementById('change-case').innerHTML = 'in';
+  }
+}
+
 function keyDownHandler (e) {
   for (let i = letters.length - 1; i >= 0; i--) {
     let l = letters[i];
-    if (e.shiftKey) {
-      if (e.keyCode === l.code) {
-        type(i, l);
-        return;
+    if (caseSensitive) {
+      if (e.shiftKey) {
+        if (e.keyCode === l.code) {
+          type(i, l);
+          return;
+        }
+      } else {
+        if (e.keyCode + 32 === l.code) {
+          type(i, l);
+          return;
+        }
       }
     } else {
-      if (e.keyCode + 32 === l.code) {
+      if (e.keyCode === l.code || e.keyCode + 32 === l.code) {
         type(i, l);
         return;
       }

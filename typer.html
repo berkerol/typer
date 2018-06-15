@@ -5,10 +5,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
   <title>Typer</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" rel="stylesheet" />
   <link href="typer.css" rel="stylesheet" />
 </head>
 
 <body>
+  <a class="btn btn-lg btn-info change-case" onclick="changeCase()" accesskey="c"><span class="glyphicon glyphicon-refresh"></span> <span style="text-decoration: underline">C</span>ase <span id="change-case"></span>sensitive</a>
   <canvas id="canvas">Your browser doesn't support HTML5.</canvas>
   <script src="typer.js"></script>
 </body>
