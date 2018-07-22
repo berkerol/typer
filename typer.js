@@ -54,15 +54,15 @@ function draw () {
   ctx.font = letter.font;
   ctx.fillStyle = letter.color;
   for (let l of letters) {
-    drawLabel(String.fromCharCode(l.code), l.x, l.y);
+    ctx.fillText(String.fromCharCode(l.code), l.x, l.y);
   }
   for (let p of particles) {
     drawCircle(p);
   }
   ctx.font = label.font;
   ctx.fillStyle = label.color;
-  drawLabel('Score: ' + score, 10, label.margin);
-  drawLabel('Lives: ' + lives, canvas.width - 110, label.margin);
+  ctx.fillText('Score: ' + score, 10, label.margin);
+  ctx.fillText('Lives: ' + lives, canvas.width - 110, label.margin);
   processParticles();
   createLetters();
   removeLetters();
@@ -75,10 +75,6 @@ function drawCircle (c) {
   ctx.fillStyle = c.color;
   ctx.fill();
   ctx.closePath();
-}
-
-function drawLabel (text, x, y) {
-  ctx.fillText(text, x, y);
 }
 
 function processParticles () {
