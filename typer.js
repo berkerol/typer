@@ -95,7 +95,7 @@ function createLetters () {
     let y = Math.random() * canvas.height;
     let dX = center.x - x;
     let dY = center.y - y;
-    let norm = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+    let norm = Math.sqrt(dX ** 2 + dY ** 2);
     let speed = letter.lowestSpeed + Math.random() * (letter.highestSpeed - letter.lowestSpeed);
     letters.push({
       x,
