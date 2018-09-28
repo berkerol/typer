@@ -1,7 +1,13 @@
+/* global performance */
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+
+const getTime = typeof performance === 'function' ? performance.now : Date.now;
+const FRAME_DURATION = 1000 / 58;
+let then = getTime();
+let acc = 0;
 
 let score = 0;
 let lives = 10;
@@ -49,6 +55,19 @@ document.addEventListener('keydown', keyDownHandler);
 window.addEventListener('resize', resizeHandler);
 
 function draw () {
+  let now = getTime();
+  let ms = now - then;
+  let frames = 0;
+  then = now;
+  if (ms < 1000) {
+    acc += ms;
+    while (acc >= FRAME_DURATION) {
+      frames++;
+      acc -= FRAME_DURATION;
+    }
+  } else {
+    ms = 0;
+  }
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawCircle(center);
   ctx.font = letter.font;
@@ -63,9 +82,9 @@ function draw () {
   ctx.fillStyle = label.color;
   ctx.fillText('Score: ' + score, 10, label.margin);
   ctx.fillText('Lives: ' + lives, canvas.width - 110, label.margin);
-  processParticles();
+  processParticles(frames);
   createLetters();
-  removeLetters();
+  removeLetters(frames);
   window.requestAnimationFrame(draw);
 }
 
@@ -77,11 +96,11 @@ function drawCircle (c) {
   ctx.closePath();
 }
 
-function processParticles () {
+function processParticles (frames) {
   for (let i = particles.length - 1; i >= 0; i--) {
     let p = particles[i];
-    p.x += p.speedX;
-    p.y += p.speedY;
+    p.x += p.speedX * frames;
+    p.y += p.speedY * frames;
     p.radius -= particle.decrease;
     if (p.radius <= 0 || p.x < 0 || p.x > canvas.width || p.y < 0 || p.y > canvas.height) {
       particles.splice(i, 1);
@@ -107,7 +126,7 @@ function createLetters () {
   }
 }
 
-function removeLetters () {
+function removeLetters (frames) {
   for (let l of letters) {
     if (intersects(l.x, l.y, letter.size, letter.size, center.x, center.y, center.radius, center.radius)) {
       if (--lives === 0) {
@@ -120,8 +139,8 @@ function removeLetters () {
       }
       break;
     } else {
-      l.x += l.speedX;
-      l.y += l.speedY;
+      l.x += l.speedX * frames;
+      l.y += l.speedY * frames;
     }
   }
 }
