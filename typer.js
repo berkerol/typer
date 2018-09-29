@@ -1,4 +1,5 @@
 /* global performance */
+/* global FPSMeter */
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -8,6 +9,14 @@ const getTime = typeof performance === 'function' ? performance.now : Date.now;
 const FRAME_DURATION = 1000 / 58;
 let then = getTime();
 let acc = 0;
+let meter = new FPSMeter({
+  left: canvas.width - 130 + 'px',
+  top: 'auto',
+  bottom: '12px',
+  theme: 'colorful',
+  heat: 1,
+  graph: 1
+});
 
 let score = 0;
 let lives = 10;
@@ -68,6 +77,7 @@ function draw () {
   } else {
     ms = 0;
   }
+  meter.tick();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawCircle(center);
   ctx.font = letter.font;
