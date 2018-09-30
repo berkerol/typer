@@ -9,6 +9,7 @@ const getTime = typeof performance === 'function' ? performance.now : Date.now;
 const FRAME_DURATION = 1000 / 58;
 let then = getTime();
 let acc = 0;
+FPSMeter.theme.colorful.container.height = '40px';
 let meter = new FPSMeter({
   left: canvas.width - 130 + 'px',
   top: 'auto',
