@@ -142,8 +142,8 @@ function removeLetters (frames) {
     if (intersects(l.x, l.y, letter.size, letter.size, center.x, center.y, center.radius, center.radius)) {
       if (--lives === 0) {
         window.alert('GAME OVER!');
-        document.location.reload();
-      } else {
+        window.location.reload(false);
+      } else if (lives > 0) {
         window.alert('START AGAIN!');
         letters = [];
         particles = [];
