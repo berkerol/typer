@@ -24,8 +24,8 @@ let lives = 10;
 let caseSensitive = true;
 
 let center = {
-  x: canvas.width / 2 - 20,
-  y: canvas.height / 2 - 20,
+  x: canvas.width / 2,
+  y: canvas.height / 2,
   radius: 20,
   color: '#FF0000'
 };
@@ -219,6 +219,6 @@ function keyDownHandler (e) {
 function resizeHandler () {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  center.x = canvas.width / 2 - center.radius;
-  center.y = canvas.height / 2 - center.radius;
+  center.x = canvas.width / 2;
+  center.y = canvas.height / 2;
 }
