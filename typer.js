@@ -1,5 +1,4 @@
-/* global performance */
-/* global FPSMeter */
+/* global performance FPSMeter */
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
