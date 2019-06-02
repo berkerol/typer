@@ -1,7 +1,7 @@
 /* global performance */
 /* global FPSMeter */
-let canvas = document.getElementById('canvas');
-let ctx = canvas.getContext('2d');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
@@ -10,7 +10,7 @@ const FRAME_DURATION = 1000 / 58;
 let then = getTime();
 let acc = 0;
 FPSMeter.theme.colorful.container.height = '40px';
-let meter = new FPSMeter({
+const meter = new FPSMeter({
   left: canvas.width - 130 + 'px',
   top: 'auto',
   bottom: '12px',
@@ -23,14 +23,14 @@ let score = 0;
 let lives = 10;
 let caseSensitive = true;
 
-let center = {
+const center = {
   x: canvas.width / 2,
   y: canvas.height / 2,
   radius: 20,
   color: '#FF0000'
 };
 
-let letter = {
+const letter = {
   font: '20px Arial',
   color: '#0095DD',
   size: 30,
@@ -39,7 +39,7 @@ let letter = {
   probability: 0.02
 };
 
-let particle = {
+const particle = {
   alpha: 0.5,
   decrease: 0.05,
   highestRadius: 5,
@@ -51,7 +51,7 @@ let particle = {
   total: 50
 };
 
-let label = {
+const label = {
   font: '24px Arial',
   color: '#0095DD',
   margin: 20
@@ -65,7 +65,7 @@ document.addEventListener('keydown', keyDownHandler);
 window.addEventListener('resize', resizeHandler);
 
 function draw () {
-  let now = getTime();
+  const now = getTime();
   let ms = now - then;
   let frames = 0;
   then = now;
@@ -83,10 +83,10 @@ function draw () {
   drawCircle(center);
   ctx.font = letter.font;
   ctx.fillStyle = letter.color;
-  for (let l of letters) {
+  for (const l of letters) {
     ctx.fillText(String.fromCharCode(l.code), l.x, l.y);
   }
-  for (let p of particles) {
+  for (const p of particles) {
     drawCircle(p);
   }
   ctx.font = label.font;
@@ -109,7 +109,7 @@ function drawCircle (c) {
 
 function processParticles (frames) {
   for (let i = particles.length - 1; i >= 0; i--) {
-    let p = particles[i];
+    const p = particles[i];
     p.x += p.speedX * frames;
     p.y += p.speedY * frames;
     p.radius -= particle.decrease;
@@ -121,12 +121,12 @@ function processParticles (frames) {
 
 function createLetters () {
   if (Math.random() < letter.probability) {
-    let x = Math.random() < 0.5 ? 0 : canvas.width;
-    let y = Math.random() * canvas.height;
-    let dX = center.x - x;
-    let dY = center.y - y;
-    let norm = Math.sqrt(dX ** 2 + dY ** 2);
-    let speed = letter.lowestSpeed + Math.random() * (letter.highestSpeed - letter.lowestSpeed);
+    const x = Math.random() < 0.5 ? 0 : canvas.width;
+    const y = Math.random() * canvas.height;
+    const dX = center.x - x;
+    const dY = center.y - y;
+    const norm = Math.sqrt(dX ** 2 + dY ** 2);
+    const speed = letter.lowestSpeed + Math.random() * (letter.highestSpeed - letter.lowestSpeed);
     letters.push({
       x,
       y,
@@ -138,7 +138,7 @@ function createLetters () {
 }
 
 function removeLetters (frames) {
-  for (let l of letters) {
+  for (const l of letters) {
     if (intersects(l.x, l.y, letter.size, letter.size, center.x, center.y, center.radius, center.radius)) {
       if (--lives === 0) {
         window.alert('GAME OVER!');
@@ -168,7 +168,7 @@ function type (i, l) {
   letters.splice(i, 1);
   score++;
   for (let j = 0; j < particle.total; j++) {
-    let c = generateRandomRgbColor();
+    const c = generateRandomRgbColor();
     particles.push({
       x: l.x,
       y: l.y,
@@ -191,7 +191,7 @@ function changeCase () {
 
 function keyDownHandler (e) {
   for (let i = letters.length - 1; i >= 0; i--) {
-    let l = letters[i];
+    const l = letters[i];
     if (caseSensitive) {
       if (e.shiftKey) {
         if (e.keyCode === l.code) {
