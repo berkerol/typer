@@ -179,14 +179,14 @@ function type (i, l) {
   }
 }
 
-function changeCase () {
+window.changeCase = function () {
   caseSensitive = !caseSensitive;
   if (caseSensitive) {
     document.getElementById('change-case').innerHTML = '';
   } else {
     document.getElementById('change-case').innerHTML = 'in';
   }
-}
+};
 
 function keyDownHandler (e) {
   for (let i = letters.length - 1; i >= 0; i--) {
