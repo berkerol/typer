@@ -6,13 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Typer</title>
   <meta name="description" content="A tower defense like typing game">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="typer.css">
 </head>
 
 <body>
-  <a class="btn btn-lg btn-info change-case" onclick="changeCase()" accesskey="c"><span class="glyphicon glyphicon-refresh"></span> <span style="text-decoration: underline">C</span>ase <span id="change-case"></span>sensitive</a>
+  <button type="button" class="btn btn-info btn-lg btn-center" onclick="changeCase()" accesskey="c"><i class="fas fa-sync"></i> <span style="text-decoration: underline">C</span>ase <span id="change-case"></span>sensitive</button>
   <canvas id="canvas">Your browser doesn't support HTML5.</canvas>
+  <script src="https://kit.fontawesome.com/a1c4b21e48.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fpsmeter/0.3.1/fpsmeter.min.js"></script>
   <script src="typer.js"></script>
   <script>
