@@ -182,9 +182,9 @@ function type (i, l) {
 window.changeCase = function () {
   caseSensitive = !caseSensitive;
   if (caseSensitive) {
-    document.getElementById('change-case').innerHTML = '';
+    document.getElementById('change-case-text').innerHTML = '';
   } else {
-    document.getElementById('change-case').innerHTML = 'in';
+    document.getElementById('change-case-text').innerHTML = 'in';
   }
 };
 
