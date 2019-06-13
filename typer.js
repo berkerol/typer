@@ -99,11 +99,10 @@ function draw () {
 }
 
 function drawCircle (c) {
+  ctx.fillStyle = c.color;
   ctx.beginPath();
   ctx.arc(c.x, c.y, c.radius, 0, 2 * Math.PI);
-  ctx.fillStyle = c.color;
   ctx.fill();
-  ctx.closePath();
 }
 
 function processParticles (frames) {
