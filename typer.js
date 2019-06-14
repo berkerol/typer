@@ -39,11 +39,12 @@ const letter = {
 };
 
 const particle = {
-  alpha: 0.5,
   decrease: 0.05,
+  highestAlpha: 0.8,
   highestRadius: 5,
   highestSpeedX: 5,
   highestSpeedY: 5,
+  lowestAlpha: 0.4,
   lowestRadius: 2,
   lowestSpeedX: -5,
   lowestSpeedY: -5,
@@ -167,11 +168,12 @@ function type (i, l) {
   score++;
   for (let j = 0; j < particle.total; j++) {
     const c = generateRandomRgbColor();
+    const alpha = particle.lowestAlpha + Math.random() * (particle.highestAlpha - particle.lowestAlpha);
     particles.push({
       x: l.x,
       y: l.y,
       radius: particle.lowestRadius + Math.random() * (particle.highestRadius - particle.lowestRadius),
-      color: `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${particle.alpha})`,
+      color: `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${alpha})`,
       speedX: particle.lowestSpeedX + Math.random() * (particle.highestSpeedX - particle.lowestSpeedX),
       speedY: particle.lowestSpeedY + Math.random() * (particle.highestSpeedY - particle.lowestSpeedY)
     });
