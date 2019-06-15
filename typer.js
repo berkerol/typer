@@ -54,7 +54,9 @@ const particle = {
 const label = {
   font: '24px Arial',
   color: '#0095DD',
-  margin: 20
+  margin: 20,
+  left: 10,
+  right: canvas.width - 110
 };
 
 let letters = [];
@@ -91,8 +93,8 @@ function draw () {
   }
   ctx.font = label.font;
   ctx.fillStyle = label.color;
-  ctx.fillText('Score: ' + score, 10, label.margin);
-  ctx.fillText('Lives: ' + lives, canvas.width - 110, label.margin);
+  ctx.fillText('Score: ' + score, label.left, label.margin);
+  ctx.fillText('Lives: ' + lives, label.right, label.margin);
   processParticles(frames);
   createLetters();
   removeLetters(frames);
