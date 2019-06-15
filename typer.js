@@ -5,6 +5,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const getTime = typeof performance === 'function' ? performance.now : Date.now;
+const FRAME_THRESHOLD = 300;
 const FRAME_DURATION = 1000 / 58;
 let then = getTime();
 let acc = 0;
@@ -72,7 +73,7 @@ function draw () {
   let ms = now - then;
   let frames = 0;
   then = now;
-  if (ms < 1000) {
+  if (ms < FRAME_THRESHOLD) {
     acc += ms;
     while (acc >= FRAME_DURATION) {
       frames++;
