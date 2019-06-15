@@ -8,6 +8,7 @@ const getTime = typeof performance === 'function' ? performance.now : Date.now;
 const FRAME_DURATION = 1000 / 58;
 let then = getTime();
 let acc = 0;
+let animation;
 FPSMeter.theme.colorful.container.height = '40px';
 const meter = new FPSMeter({
   left: canvas.width - 130 + 'px',
@@ -98,7 +99,7 @@ function draw () {
   processParticles(frames);
   createLetters();
   removeLetters(frames);
-  window.requestAnimationFrame(draw);
+  animation = window.requestAnimationFrame(draw);
 }
 
 function drawCircle (c) {
@@ -192,29 +193,37 @@ window.changeCase = function () {
 };
 
 function keyDownHandler (e) {
-  for (let i = letters.length - 1; i >= 0; i--) {
-    const l = letters[i];
-    if (caseSensitive) {
-      if (e.shiftKey) {
-        if (e.keyCode === l.code) {
-          type(i, l);
-          return;
+  if (animation !== undefined && e.keyCode >= 65 && e.keyCode <= 90) {
+    for (let i = letters.length - 1; i >= 0; i--) {
+      const l = letters[i];
+      if (caseSensitive) {
+        if (e.shiftKey) {
+          if (e.keyCode === l.code) {
+            type(i, l);
+            return;
+          }
+        } else {
+          if (e.keyCode + 32 === l.code) {
+            type(i, l);
+            return;
+          }
         }
       } else {
-        if (e.keyCode + 32 === l.code) {
+        if (e.keyCode === l.code || e.keyCode + 32 === l.code) {
           type(i, l);
           return;
         }
       }
-    } else {
-      if (e.keyCode === l.code || e.keyCode + 32 === l.code) {
-        type(i, l);
-        return;
-      }
     }
-  }
-  if (!e.shiftKey) {
     score--;
+  }
+  if (e.keyCode === 27) {
+    if (animation === undefined) {
+      animation = window.requestAnimationFrame(draw);
+    } else {
+      window.cancelAnimationFrame(animation);
+      animation = undefined;
+    }
   }
 }
 

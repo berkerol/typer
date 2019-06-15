@@ -5,7 +5,7 @@
 [![ECMAScript](https://img.shields.io/badge/ECMAScript-latest-brightgreen.svg)](https://www.ecma-international.org/ecma-262)
 [![license](https://img.shields.io/badge/license-GNU%20GPL%20v3.0-blue.svg)](https://github.com/berkerol/typer/blob/master/LICENSE)
 
-A tower defense like typing game. Characters can be case sensitive or insensitive. Wrong characters decrease the score. Click button to change case sensitivity.
+A tower defense like typing game. Characters can be case sensitive or insensitive. Wrong characters decrease the score. Click button to change case sensitivity. Pause by pressing _ESC_.
 
 [![button](play.png)](https://berkerol.github.io/typer/typer.html)
 
