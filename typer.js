@@ -64,11 +64,16 @@ function removeLetters (frames) {
   for (const l of letters) {
     if (isIntersectingRectangleWithRectangle(l, letter.size, letter.size, center, center.radius, center.radius)) {
       if (--lives === 0) {
-        window.alert('GAME OVER!');
-        window.location.reload(false);
+        ExplodeAllLetters();
+        setTimeout(function() {
+          window.alert('GAME OVER!');
+          window.location.reload(false);
+          }, 1500)
       } else if (lives > 0) {
-        window.alert('START AGAIN!');
-        letters = [];
+        ExplodeAllLetters();
+        setTimeout(function() {
+          window.alert('START AGAIN!');
+        }, 1500)
       }
       break;
     } else {
@@ -76,6 +81,15 @@ function removeLetters (frames) {
       l.y += l.speedY * frames;
     }
   }
+}
+
+function ExplodeAllLetters() {
+  for (let i = letters.length - 1; i >= 0; i--) {
+    const l = letters[i];
+    letters.splice(i, 1);
+    createParticles(l.x, l.y);
+  }
+  letters = [];
 }
 
 function type (i, l) {
