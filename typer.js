@@ -71,9 +71,6 @@ function removeLetters (frames) {
           }, 1500)
       } else if (lives > 0) {
         ExplodeAllLetters();
-        setTimeout(function() {
-          window.alert('START AGAIN!');
-        }, 1500)
       }
       break;
     } else {
