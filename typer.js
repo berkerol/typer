@@ -1,4 +1,4 @@
-/* global canvas ctx animation:writable gameLoop label loop paintCircle isIntersectingRectangleWithRectangle generateRandomNumber generateRandomCharCode paintParticles createParticles processParticles */
+/* global canvas ctx animation:writable gameLoop label loop paintCircle isIntersectingRectangleWithCircle generateRandomNumber generateRandomCharCode paintParticles createParticles processParticles */
 let score = 0;
 let lives = 10;
 let caseSensitive = true;
@@ -11,9 +11,10 @@ const center = {
 };
 
 const letter = {
-  font: '20px Arial',
+  font: '25px Monospace',
   color: '#0095DD',
-  size: 30,
+  width: 15,
+  height: 20,
   highestSpeed: 1.6,
   lowestSpeed: 0.6,
   probability: 0.02
@@ -21,6 +22,8 @@ const letter = {
 
 let letters = [];
 
+ctx.font = label.font;
+letter.width = ctx.measureText('0').width;
 document.addEventListener('keydown', keyDownHandler);
 document.addEventListener('keyup', keyUpHandler);
 window.addEventListener('resize', resizeHandler);
@@ -62,7 +65,7 @@ function createLetters () {
 
 function removeLetters (frames) {
   for (const l of letters) {
-    if (isIntersectingRectangleWithRectangle(l, letter.size, letter.size, center, center.radius, center.radius)) {
+    if (isIntersectingRectangleWithCircle({ x: l.x, y: l.y - letter.height }, letter.width, letter.height, center, center.radius)) {
       if (--lives === 0) {
         window.alert('GAME OVER!');
         window.location.reload(false);
