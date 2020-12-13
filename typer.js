@@ -1,4 +1,4 @@
-/* global canvas ctx animation:writable gameLoop label loop paintCircle isIntersectingRectangleWithRectangle generateRandomNumber generateRandomInteger paintParticles createParticles processParticles */
+/* global canvas ctx animation:writable gameLoop label loop paintCircle isIntersectingRectangleWithRectangle generateRandomNumber generateRandomCharCode paintParticles createParticles processParticles */
 let score = 0;
 let lives = 10;
 let caseSensitive = true;
@@ -53,7 +53,7 @@ function createLetters () {
     letters.push({
       x,
       y,
-      code: Math.random() < 0.5 ? generateRandomInteger(25) + 65 : generateRandomInteger(25) + 97,
+      code: generateRandomCharCode(caseSensitive),
       speedX: dX / norm * speed,
       speedY: dY / norm * speed
     });
